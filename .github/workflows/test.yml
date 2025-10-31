@@ -24,8 +24,8 @@ jobs:
           cat monitoring.log
           echo "=== end ==="
           if grep -q "API: HTTP" monitoring.log; then
-            echo "SUCCESS: API check found in log"
+            echo "SUCCESS: API check found"
           else
-            echo "FAIL: API check NOT found in log"
+            echo "FAIL: API check NOT found"
             exit 1
           fi
