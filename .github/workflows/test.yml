@@ -1,0 +1,24 @@
+name: Test Monitor
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup
+        run: |
+          chmod +x test monitor.sh
+          ./test &
+          sleep 3
+
+      - name: Run monitor
+        run: ./monitor.sh
+
+      - name: Check log
+        run: |
+          cat monitoring.log
+          grep "API: HTTP" monitoring.log
