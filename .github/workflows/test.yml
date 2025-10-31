@@ -20,5 +20,12 @@ jobs:
 
       - name: Check log
         run: |
+          echo "=== monitoring.log ==="
           cat monitoring.log
-          grep "API: HTTP" monitoring.log
+          echo "=== end ==="
+          if grep -q "API: HTTP" monitoring.log; then
+            echo "SUCCESS: API check found in log"
+          else
+            echo "FAIL: API check NOT found in log"
+            exit 1
+          fi
