@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "test process started (PID: $$)"
+sleep 3600

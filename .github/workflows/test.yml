@@ -5,27 +5,32 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup
+      - name: Install curl
+        run: sudo apt-get update && sudo apt-get install -y curl
+
+      - name: Setup and run
         run: |
           chmod +x test monitor.sh
           ./test &
-          sleep 3
+          TEST_PID=$!
+          echo "Started test with PID: $TEST_PID"
+          sleep 5
+          ./monitor.sh
+          kill $TEST_PID || true
 
-      - name: Run monitor
-        run: ./monitor.sh
-
-      - name: Check log
+      - name: Show log
         run: |
           echo "=== monitoring.log ==="
-          cat monitoring.log
+          cat monitoring.log || echo "No log"
           echo "=== end ==="
           if grep -q "API: HTTP" monitoring.log; then
             echo "SUCCESS: API check found"
           else
-            echo "FAIL: API check NOT found"
+            echo "FAIL: No API check in log"
             exit 1
           fi
