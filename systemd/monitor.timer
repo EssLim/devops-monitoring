@@ -1,0 +1,10 @@
+[Unit]
+Description=Run monitor every minute
+
+[Timer]
+OnCalendar=*:0/1
+Persistent=true
+Unit=monitor.service
+
+[Install]
+WantedBy=timers.target
